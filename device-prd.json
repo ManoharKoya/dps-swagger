@@ -1,0 +1,552 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "version": "2021-06-01",
+    "title": "ProvisioningDeviceClient",
+    "description": "API for device runtime operations with the Azure IoT Hub Device Provisioning Service"
+  },
+  "servers": [
+    {
+      "url": "https://global.azure-devices-provisioning.net"
+    }
+  ],
+  "paths": {
+    "/{idScope}/registrations/{registrationId}/operations/{operationId}": {
+      "get": {
+        "tags": [
+          "GET"
+        ],
+        "summary": "Gets the registration operation status.",
+        "operationId": "RuntimeRegistration_OperationStatusLookup",
+        "parameters": [
+          {
+            "name": "registrationId",
+            "in": "path",
+            "description": "Registration ID.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "ws-synthetics-mtls.ame-prd.ursa.azsec.microsoft.com"
+            }
+          },
+          {
+            "name": "operationId",
+            "in": "path",
+            "description": "Operation ID.",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "idScope",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "0ne01297B0C"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/ApiVersionParameter"
+          }
+        ],
+        "responses": {
+          "202": {
+            "description": "Success",
+            "headers": {
+              "retry-after": {
+                "description": "The retry interval in seconds.",
+                "schema": {
+                  "type": "integer"
+                }
+              },
+              "Location": {
+                "description": "The location of the resource.",
+                "schema": {
+                  "type": "string"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationOperationStatus"
+                }
+              }
+            }
+          },
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationOperationStatus"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProvisioningServiceErrorDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{idScope}/registrations/{registrationId}": {
+      "post": {
+        "tags": [
+          "POST"
+        ],
+        "summary": "Gets the device registration status.",
+        "operationId": "RuntimeRegistration_DeviceRegistrationStatusLookup",
+        "parameters": [
+          {
+            "name": "registrationId",
+            "in": "path",
+            "description": "Registration ID.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "ws-synthetics-mtls.ame-prd.ursa.azsec.microsoft.com"
+            }
+          },
+          {
+            "name": "idScope",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "0ne01297B0C"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/ApiVersionParameter"
+          }
+        ],
+        "requestBody": {
+          "description": "Device registration.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeviceRegistration"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/DeviceRegistrationResult"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProvisioningServiceErrorDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/{idScope}/registrations/{registrationId}/register": {
+      "put": {
+        "tags": [
+          "PUT"
+        ],
+        "summary": "Registers the devices.",
+        "operationId": "RuntimeRegistration_RegisterDevice",
+        "parameters": [
+          {
+            "name": "registrationId",
+            "in": "path",
+            "description": "The registration ID is alphanumeric, lowercase, and may contain hyphens.",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "ws-synthetics-mtls.ame-prd.ursa.azsec.microsoft.com"
+            }
+          },
+          {
+            "name": "idScope",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string",
+              "default": "0ne01297B0C"
+            }
+          },
+          {
+            "$ref": "#/components/parameters/ApiVersionParameter"
+          }
+        ],
+        "requestBody": {
+          "description": "Device registration request.",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/DeviceRegistration"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Success",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationOperationStatus"
+                }
+              }
+            }
+          },
+          "202": {
+            "description": "Success",
+            "headers": {
+              "Location": {
+                "description": "The location of the resource.",
+                "schema": {
+                  "type": "string"
+                }
+              },
+              "retry-after": {
+                "description": "The retry interval in seconds.",
+                "schema": {
+                  "type": "integer"
+                }
+              }
+            },
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/RegistrationOperationStatus"
+                }
+              }
+            }
+          },
+          "default": {
+            "description": "Error response",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/ProvisioningServiceErrorDetails"
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "RegistrationOperationStatus": {
+        "description": "Registration operation status.",
+        "required": [
+          "operationId"
+        ],
+        "type": "object",
+        "properties": {
+          "operationId": {
+            "description": "Operation ID.",
+            "type": "string"
+          },
+          "status": {
+            "description": "Device enrollment status.",
+            "type": "string",
+            "enum": [
+              "unassigned",
+              "assigning",
+              "assigned",
+              "failed",
+              "disabled"
+            ]
+          },
+          "registrationState": {
+            "description": "Device registration status.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/DeviceRegistrationResult"
+              }
+            ]
+          }
+        }
+      },
+      "DeviceRegistrationResult": {
+        "description": "Device registration result.",
+        "type": "object",
+        "properties": {
+          "tpm": {
+            "description": "Registration result returned when using TPM attestation.",
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TpmRegistrationResult"
+              }
+            ]
+          },
+          "x509": {
+            "description": "Registration result returned when using X509 attestation.",
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/X509RegistrationResult"
+              }
+            ]
+          },
+          "symmetricKey": {
+            "description": "Registration result returned when using SymmetricKey attestation.",
+            "readOnly": true,
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/SymmetricKeyRegistrationResult"
+              }
+            ]
+          },
+          "registrationId": {
+            "description": "The registration ID is alphanumeric, lowercase, and may contain hyphens.",
+            "type": "string",
+            "readOnly": true
+          },
+          "createdDateTimeUtc": {
+            "format": "date-time",
+            "description": "Registration create date time (in UTC).",
+            "type": "string",
+            "readOnly": true
+          },
+          "assignedHub": {
+            "description": "Assigned Azure IoT Hub.",
+            "type": "string",
+            "readOnly": true
+          },
+          "deviceId": {
+            "description": "Device ID.",
+            "type": "string",
+            "readOnly": true
+          },
+          "status": {
+            "description": "Enrollment status.",
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "unassigned",
+              "assigning",
+              "assigned",
+              "failed",
+              "disabled"
+            ]
+          },
+          "substatus": {
+            "description": "Substatus for 'Assigned' devices. Possible values include - 'initialAssignment': Device has been assigned to an IoT hub for the first time, 'deviceDataMigrated': Device has been assigned to a different IoT hub and its device data was migrated from the previously assigned IoT hub. Device data was removed from the previously assigned IoT hub, 'deviceDataReset':  Device has been assigned to a different IoT hub and its device data was populated from the initial state stored in the enrollment. Device data was removed from the previously assigned IoT hub, 'reprovisionedToInitialAssignment': Device has been re-provisioned to a previously assigned IoT hub.",
+            "type": "string",
+            "readOnly": true,
+            "enum": [
+              "initialAssignment",
+              "deviceDataMigrated",
+              "deviceDataReset",
+              "reprovisionedToInitialAssignment"
+            ]
+          },
+          "errorCode": {
+            "format": "int32",
+            "description": "Error code.",
+            "type": "integer",
+            "readOnly": true
+          },
+          "errorMessage": {
+            "description": "Error message.",
+            "type": "string",
+            "readOnly": true
+          },
+          "lastUpdatedDateTimeUtc": {
+            "format": "date-time",
+            "description": "Last updated date time (in UTC).",
+            "type": "string",
+            "readOnly": true
+          },
+          "etag": {
+            "description": "The entity tag associated with the resource.",
+            "type": "string",
+            "readOnly": true
+          },
+          "payload": {
+            "description": "Custom allocation payload returned from the webhook to the device.",
+            "type": "object",
+            "readOnly": true
+          }
+        }
+      },
+      "TpmRegistrationResult": {
+        "description": "TPM registration result.",
+        "type": "object",
+        "properties": {
+          "authenticationKey": {
+            "description": "Encrypted authentication key.",
+            "type": "string"
+          }
+        }
+      },
+      "X509RegistrationResult": {
+        "description": "X509 registration result.",
+        "type": "object",
+        "properties": {
+          "certificateInfo": {
+            "$ref": "#/components/schemas/X509CertificateInfo"
+          },
+          "enrollmentGroupId": {
+            "type": "string"
+          },
+          "signingCertificateInfo": {
+            "$ref": "#/components/schemas/X509CertificateInfo"
+          }
+        }
+      },
+      "SymmetricKeyRegistrationResult": {
+        "description": "Registration result returned when using SymmetricKey attestation.",
+        "type": "object",
+        "properties": {
+          "enrollmentGroupId": {
+            "type": "string"
+          }
+        }
+      },
+      "X509CertificateInfo": {
+        "description": "X509 certificate info.",
+        "required": [
+          "subjectName",
+          "sha1Thumbprint",
+          "sha256Thumbprint",
+          "issuerName",
+          "notBeforeUtc",
+          "notAfterUtc",
+          "serialNumber",
+          "version"
+        ],
+        "type": "object",
+        "properties": {
+          "subjectName": {
+            "type": "string"
+          },
+          "sha1Thumbprint": {
+            "type": "string"
+          },
+          "sha256Thumbprint": {
+            "type": "string"
+          },
+          "issuerName": {
+            "type": "string"
+          },
+          "notBeforeUtc": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "notAfterUtc": {
+            "format": "date-time",
+            "type": "string"
+          },
+          "serialNumber": {
+            "type": "string"
+          },
+          "version": {
+            "format": "int32",
+            "type": "integer"
+          }
+        }
+      },
+      "ProvisioningServiceErrorDetails": {
+        "description": "Contains the properties of an error returned by the Azure IoT Hub Provisioning Service.",
+        "type": "object",
+        "properties": {
+          "errorCode": {
+            "format": "int32",
+            "type": "integer"
+          },
+          "trackingId": {
+            "type": "string"
+          },
+          "message": {
+            "type": "string"
+          },
+          "info": {
+            "type": "object",
+            "additionalProperties": {
+              "type": "string"
+            }
+          },
+          "timestampUtc": {
+            "format": "date-time",
+            "type": "string"
+          }
+        }
+      },
+      "DeviceRegistration": {
+        "description": "Device registration.",
+        "type": "object",
+        "properties": {
+          "registrationId": {
+            "description": "The registration ID is a case-insensitive string (up to 128 characters long) of alphanumeric characters plus certain special characters : . _ -. No special characters allowed at start or end.",
+            "type": "string"
+          },
+          "tpm": {
+            "description": "Tpm.",
+            "allOf": [
+              {
+                "$ref": "#/components/schemas/TpmAttestation"
+              }
+            ]
+          },
+          "payload": {
+            "description": "Custom allocation payload.",
+            "type": "object"
+          }
+        }
+      },
+      "TpmAttestation": {
+        "description": "Attestation via TPM.",
+        "required": [
+          "endorsementKey"
+        ],
+        "type": "object",
+        "properties": {
+          "endorsementKey": {
+            "type": "string"
+          },
+          "storageRootKey": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "parameters": {
+      "ApiVersionParameter": {
+        "name": "api-version",
+        "in": "query",
+        "description": "The API version to use for the request. Supported versions include: 2021-06-01",
+        "required": true,
+        "schema": {
+          "type": "string",
+          "default": "2021-06-01"
+        }
+      }
+    }
+  },
+  "tags": []
+}
